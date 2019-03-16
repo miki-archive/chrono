@@ -1,2 +1,2 @@
-![logo](https://i.imgur.com/nqa01vA.png)<hr>
-Time-driven task scheduling.
+![logo](https://i.imgur.com/nqa01vA.png)<br>Time-driven task scheduling.<hr>
+
