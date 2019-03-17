@@ -7,4 +7,5 @@ type TaskModel struct {
 	StartTime int64
 	ExpirationTime int64
 	Payload string
+	EndpointID int
 }

@@ -42,6 +42,10 @@ func main() {
 	router.GET("/tasks/:uid", controllers.GetTasksOfID);
 	router.POST("/tasks", controllers.PostTasks);
 
+	router.GET("/endpoints", controllers.GetEndpoints);
+	router.GET("/endpoints/:uid", controllers.GetEndpointByID);
+	router.POST("/endpoints", controllers.PostEndpoint);
+
 	log.Fatal(fasthttp.ListenAndServe(":8080", router.Handler))
 }
 

@@ -28,34 +28,6 @@ func GetTasksOfID(ctx *fasthttp.RequestCtx) {
 	handleTasks(ctx, rows);
 }
 
-func handleTasks(ctx *fasthttp.RequestCtx, rows *sql.Rows) {
-	var tasks []models.TaskModel
-	for ;rows.Next(); {
-		var id, startTime, endTime int64;
-		var ownerID, payload string;
-
-		err := rows.Scan(&id, &ownerID, &payload, &startTime, &endTime);
-		if(err != nil) {
-			ErrorJSON(ctx, "Scan error: " + err.Error(), 500);
-		}
-		
-		tasks = append(tasks, models.TaskModel{
-			TaskID: id, 
-			OwnerID: ownerID, 
-			StartTime: startTime,
-			ExpirationTime: endTime,
-			Payload: payload,
-		});
-	}
-	rows.Close();
-
-	packet, err := json.JSON.Marshal(&tasks);
-	if(err != nil) {
-		ErrorJSON(ctx, "Decode error: " + err.Error(), 500);
-	}
-	ctx.Success("application/json", packet);
-}
-
 // PostTasks queues a new task to the list.
 func PostTasks(ctx *fasthttp.RequestCtx) {
 	var taskModel models.TaskModel
@@ -86,4 +58,34 @@ func PostTasks(ctx *fasthttp.RequestCtx) {
 		return;
 	}
 	ctx.SuccessString("application/json", string(val));
+}
+
+func handleTasks(ctx *fasthttp.RequestCtx, rows *sql.Rows) {
+	var tasks []models.TaskModel
+	for ;rows.Next(); {
+		var id, startTime, endTime int64;
+		var ownerID, payload string;
+		var endpointID int;
+
+		err := rows.Scan(&id, &ownerID, &payload, &startTime, &endTime, &endpointID);
+		if(err != nil) {
+			ErrorJSON(ctx, "Scan error: " + err.Error(), 500);
+		}
+		
+		tasks = append(tasks, models.TaskModel{
+			TaskID: id, 
+			OwnerID: ownerID, 
+			StartTime: startTime,
+			ExpirationTime: endTime,
+			Payload: payload,
+			EndpointID: endpointID,
+		});
+	}
+	rows.Close();
+
+	packet, err := json.JSON.Marshal(&tasks);
+	if(err != nil) {
+		ErrorJSON(ctx, "Decode error: " + err.Error(), 500);
+	}
+	ctx.Success("application/json", packet);
 }

@@ -13,6 +13,5 @@ func ErrorJSON(ctx *fasthttp.RequestCtx, message string, id int) {
 	if(err != nil) {
 		log.Fatalln("Error erroring... wtf?\n" + err.Error());
 	}
-	log.Println("err: " + message);
 	ctx.Error(string(str), id);
 }
